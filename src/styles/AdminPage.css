@@ -1,0 +1,653 @@
+/* styles/AdminPage.css */
+
+.admin-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f4f7f6;
+  font-family: 'Inter', sans-serif;
+  color: #333;
+}
+
+.admin-header {
+  background-color: #3498db; /* 파란색 계열 */
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.admin-title {
+  margin: 0;
+  font-size: 1.8em;
+  font-weight: 700;
+}
+
+.admin-header-buttons { /* 추가: 헤더 버튼들을 감싸는 div */
+  display: flex;
+  gap: 10px; /* 버튼들 사이 간격 */
+  align-items: center;
+}
+
+.admin-logout-btn,
+.admin-main-page-btn { /* 메인 페이지 버튼 스타일 추가 */
+  background-color: #e74c3c; /* 빨간색 계열 */
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.admin-logout-btn:hover {
+  background-color: #c0392b;
+  transform: translateY(-1px);
+}
+
+.admin-main-page-btn {
+  background-color: #2c3e50; /* 어두운 회색 계열 */
+}
+
+.admin-main-page-btn:hover {
+  background-color: #1a242f;
+  transform: translateY(-1px);
+}
+
+
+.admin-nav {
+  display: flex;
+  justify-content: center;
+  background-color: #ecf0f1; /* 밝은 회색 */
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.admin-nav-btn {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #555;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.admin-nav-btn:hover {
+  background-color: #e0e6e8;
+}
+
+.admin-nav-btn.active {
+  background-color: #3498db;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.admin-content {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 상단 정렬 */
+}
+
+.admin-section-title {
+  font-size: 1.5em;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.admin-section-loading,
+.admin-section-error {
+  text-align: center;
+  font-size: 1.2em;
+  color: #777;
+  margin-top: 50px;
+}
+
+/* AdminReservationManagement.css 통합 스타일 */
+.admin-reservation-management {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reservation-list-container {
+  width: 100%;
+  max-height: 400px; /* 스크롤 가능하도록 높이 제한 */
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #fdfdfd;
+}
+
+.no-pending-reservations {
+  text-align: center;
+  color: #777;
+  padding: 20px;
+}
+
+.pending-reservation-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pending-reservation-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+
+.pending-reservation-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.pending-reservation-item:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+.pending-reservation-item.selected {
+  background-color: #e8f0fe; /* 선택된 항목 배경색 */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.campus-label {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.85em;
+  font-weight: bold;
+  color: white;
+  margin-right: 15px;
+  min-width: 50px;
+  text-align: center;
+}
+
+.campus-label.incheon {
+  background-color: #2ecc71; /* 인캠: 초록색 */
+}
+
+.campus-label.gyeong {
+  background-color: #f1c40f; /* 경캠: 노란색 */
+}
+
+.reservation-time-display {
+  font-size: 1em;
+  color: #444;
+  flex-grow: 1; /* 남은 공간 차지 */
+  line-height: 1.4; /* 줄바꿈 시 간격 */
+}
+
+.reservation-detail-card {
+  background-color: #eef5ff; /* 밝은 파란색 배경 */
+  border: 1px solid #cce0ff;
+  border-radius: 12px;
+  padding: 25px;
+  margin-top: 20px;
+  width: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.reservation-detail-card h3 {
+  font-size: 1.4em;
+  color: #2980b9;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.reservation-detail-card p {
+  font-size: 1.05em;
+  margin-bottom: 8px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.reservation-detail-card strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.detail-actions {
+  display: flex;
+  justify-content: flex-end; /* 버튼을 오른쪽으로 정렬 */
+  margin-top: 20px;
+}
+
+.approve-btn {
+  background-color: #27ae60; /* 승인 버튼: 진한 초록 */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.approve-btn:hover {
+  background-color: #229a56;
+  transform: translateY(-2px);
+}
+
+/* AdminUserManagement.css 통합 스타일 */
+.admin-user-management {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative; /* + 버튼의 absolute 위치 기준 */
+}
+
+.user-list-container {
+  width: 100%;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #fdfdfd;
+}
+
+.no-users {
+  text-align: center;
+  color: #777;
+  padding: 20px;
+}
+
+.user-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+
+.user-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.user-item:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+.user-item.selected {
+  background-color: #e8f0fe;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.user-item.current-admin {
+  background-color: #d1e7dd; /* 현재 관리자 배경색 */
+  font-weight: bold;
+}
+
+.user-info-display {
+  font-size: 1em;
+  color: #444;
+  flex-grow: 1; /* 남은 공간 차지 */
+}
+
+.admin-indicator {
+  padding: 3px 8px;
+  background-color: #3498db;
+  color: white;
+  border-radius: 5px;
+  font-size: 0.8em;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.user-detail-card {
+  background-color: #eef5ff;
+  border: 1px solid #cce0ff;
+  border-radius: 12px;
+  padding: 25px;
+  margin-top: 20px;
+  width: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.user-detail-card h3 {
+  font-size: 1.4em;
+  color: #2980b9;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.user-detail-card p {
+  font-size: 1.05em;
+  margin-bottom: 8px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.user-detail-card strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.action-button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95em;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-left: 10px; /* 버튼 간 간격 */
+}
+
+.assign-admin-btn {
+  background-color: #28a745; /* 초록색 */
+  color: white;
+}
+
+.assign-admin-btn:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.revoke-admin-btn {
+  background-color: #ffc107; /* 노란색 */
+  color: #333;
+}
+
+.revoke-admin-btn:hover {
+  background-color: #e0a800;
+  transform: translateY(-2px);
+}
+
+.ban-user-btn {
+  background-color: #dc3545; /* 빨간색 */
+  color: white;
+}
+
+.ban-user-btn:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+}
+
+
+/* AdminUnavailableSchedule.css 통합 스타일 */
+.admin-unavailable-schedule {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative; /* + 버튼의 absolute 위치 기준 */
+}
+
+.add-unavailable-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #3498db; /* 파란색 */
+  color: white;
+  border: none;
+  border-radius: 50%; /* 원형 버튼 */
+  width: 50px;
+  height: 50px;
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 100; /* 다른 요소 위에 표시 */
+}
+
+.add-unavailable-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+/* 새로운 예약 불가 일정 리스트 스타일 */
+.unavailable-schedule-list-container {
+  width: 100%;
+  max-height: 400px; /* 스크롤 가능하도록 높이 제한 */
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #fdfdfd;
+}
+
+.no-unavailable-schedules {
+  text-align: center;
+  color: #777;
+  padding: 20px;
+}
+
+.unavailable-schedule-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.unavailable-schedule-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  border-radius: 8px;
+  margin-bottom: 5px;
+  position: relative; /* 삭제 버튼 위치 기준 */
+}
+
+.unavailable-schedule-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.unavailable-schedule-item:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+.unavailable-schedule-item.selected {
+  background-color: #e8f0fe; /* 선택된 항목 배경색 */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-info {
+  flex-grow: 1; /* 남은 공간 차지 */
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: #444;
+  font-size: 0.95em;
+  text-align: left; /* 텍스트 좌측 정렬 */
+}
+
+.schedule-reason {
+  font-weight: bold;
+  color: #333;
+}
+
+.schedule-period, /* 기간 스타일 추가 */
+.schedule-frequency,
+.schedule-time {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.delete-schedule-btn {
+  background-color: #dc3545; /* 빨간색 */
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-left: 15px; /* 리스트 아이템과의 간격 */
+  flex-shrink: 0; /* 공간이 부족해도 줄어들지 않도록 */
+}
+
+.delete-schedule-btn:hover {
+  background-color: #c82333;
+  transform: translateY(-1px);
+}
+
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .admin-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .admin-nav {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .admin-nav-btn {
+    flex-grow: 1;
+    margin: 0;
+  }
+
+  .admin-content {
+    padding: 15px;
+  }
+
+  .admin-reservation-management,
+  .admin-user-management,
+  .admin-unavailable-schedule {
+    padding: 20px;
+  }
+
+  .reservation-list-container,
+  .user-list-container,
+  .unavailable-schedule-list-container {
+    max-height: 300px;
+  }
+
+  .add-unavailable-btn {
+    bottom: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    font-size: 1.8em;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-title {
+    font-size: 1.5em;
+  }
+
+  .admin-logout-btn,
+  .admin-main-page-btn {
+    font-size: 0.8em;
+    padding: 6px 12px;
+  }
+
+  .admin-nav-btn {
+    font-size: 0.9em;
+    padding: 8px 12px;
+  }
+
+  .admin-section-title {
+    font-size: 1.3em;
+  }
+
+  .pending-reservation-item,
+  .user-item,
+  .unavailable-schedule-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .campus-label,
+  .admin-indicator {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+
+  .reservation-time-display,
+  .user-info-display,
+  .schedule-info {
+    text-align: left;
+    width: 100%; /* 모바일에서 전체 너비 사용 */
+  }
+
+  .action-button,
+  .delete-schedule-btn {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .detail-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .add-unavailable-btn {
+    bottom: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.6em;
+  }
+}

@@ -1,0 +1,242 @@
+/* styles/MyReservationsPage.css */
+
+.my-reservations-page-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 다른 요소 위에 표시 */
+}
+
+.my-reservations-page {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh; /* 화면 높이에 맞게 조절 */
+  overflow-y: auto; /* 내용이 길어지면 스크롤 */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.my-reservations-page h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+.page-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2em;
+  color: #888;
+  cursor: pointer;
+  padding: 5px;
+  line-height: 1;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.page-close-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.no-reservations {
+  text-align: center;
+  color: #666;
+  font-size: 1.1em;
+  padding: 30px;
+}
+
+.reservation-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.reservation-item {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden; /* 자식 요소의 float/margin 문제 방지 */
+  transition: all 0.3s ease;
+}
+
+.reservation-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reservation-summary {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+  gap: 10px; /* 요소들 간의 간격 */
+}
+
+.campus-indicator {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #fff;
+  min-width: 50px; /* 최소 너비로 고정하여 레이아웃 흔들림 방지 */
+  text-align: center;
+  flex-shrink: 0; /* 내용이 길어져도 줄어들지 않도록 */
+}
+
+.campus-indicator.incheon {
+  background-color: #ff9800; /* 인캠 색상 */
+}
+
+.campus-indicator.gyeong {
+  background-color: #4CAF50; /* 경캠 색상 */
+}
+
+.campus-indicator .short-text {
+  display: none; /* 기본적으로 숨김 */
+}
+
+.reservation-datetime {
+  flex-grow: 1;
+  font-size: 1.1em;
+  color: #555;
+  white-space: nowrap; /* 줄바꿈 방지 */
+  overflow: hidden;
+  text-overflow: ellipsis; /* 넘치는 텍스트 ... 처리 */
+}
+
+.reservation-status {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.9em;
+  flex-shrink: 0;
+}
+
+.reservation-status.pending {
+  background-color: #ffeb3b; /* 승인 대기 */
+  color: #333;
+}
+
+.reservation-status.approved {
+  background-color: #8bc34a; /* 승인 완료 */
+  color: #fff;
+}
+
+.reservation-actions {
+  display: flex;
+  justify-content: flex-end; /* 버튼들을 오른쪽으로 정렬 */
+  gap: 10px;
+  padding: 10px 15px 15px; /* 아래쪽 패딩 추가 */
+  border-top: 1px solid #eee;
+  background-color: #f0f0f0;
+}
+
+.action-button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.action-button:hover {
+  transform: translateY(-1px);
+}
+
+.change-button {
+  background-color: #2196F3; /* 파란색 */
+  color: white;
+}
+
+.change-button:hover {
+  background-color: #1976D2;
+}
+
+.cancel-button {
+  background-color: #f44336; /* 빨간색 */
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: #d32f2f;
+}
+
+/* 모바일 반응형 디자인 */
+@media (max-width: 768px) {
+  .my-reservations-page {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .my-reservations-page h2 {
+    font-size: 1.5em;
+  }
+
+  .page-close-btn {
+    font-size: 1.8em;
+    top: 10px;
+    right: 10px;
+  }
+
+  .reservation-summary {
+    flex-wrap: wrap; /* 요소들이 한 줄에 안 들어가면 다음 줄로 */
+    padding: 12px;
+  }
+
+  .campus-indicator {
+    padding: 6px 8px;
+    font-size: 0.9em;
+    min-width: unset; /* 모바일에서는 최소 너비 제한 해제 */
+  }
+
+  .campus-indicator .full-text {
+    display: none; /* 모바일에서 전체 텍스트 숨김 */
+  }
+
+  .campus-indicator .short-text {
+    display: inline-block; /* 모바일에서 짧은 텍스트 표시 */
+  }
+
+  .reservation-datetime {
+    width: 100%; /* 모바일에서 날짜/시간은 한 줄 전체 사용 */
+    font-size: 1em;
+    margin-top: 5px; /* 위쪽 여백 추가 */
+  }
+
+  .reservation-status {
+    font-size: 0.8em;
+    padding: 5px 8px;
+    margin-left: auto; /* 오른쪽으로 붙임 */
+  }
+
+  .reservation-actions {
+    flex-direction: column; /* 버튼들을 세로로 정렬 */
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .action-button {
+    width: 100%; /* 버튼 너비 100% */
+    padding: 10px;
+    font-size: 0.95em;
+  }
+}

@@ -1,0 +1,196 @@
+/* styles/ReservationPage.css */
+
+.reservation-page-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 다른 요소 위에 표시 */
+}
+
+.reservation-page {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 90%; /* 화면 너비의 90% 사용 */
+  max-width: 900px; /* 최대 너비 설정 (메인 페이지와 유사하게 넓게) */
+  max-height: 90vh; /* 화면 높이에 맞게 조절 */
+  overflow-y: auto; /* 내용이 길어지면 스크롤 */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.reservation-page h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+.page-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2em;
+  color: #888;
+  cursor: pointer;
+  padding: 5px;
+  line-height: 1;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.page-close-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="tel"],
+.form-group select,
+.form-group textarea {
+  width: calc(100% - 20px); /* 패딩 고려 */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+/* 신청자 입력 필드의 기본값 스타일 */
+.applicant-info-input.default-value {
+  color: #888;
+  font-weight: bold;
+}
+
+/* 신청자 입력 필드의 사용자 입력 스타일 */
+.applicant-info-input:not(.default-value) {
+  color: #333;
+  font-weight: normal;
+}
+
+.form-group .custom-select-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.form-group .custom-select-wrapper select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2C197.3L159.9%2C69.8c-2.9-2.9-6.9-4.7-11.2-4.7c-4.3%2C0-8.3%2C1.7-11.2%2C4.7L5.3%2C197.3c-2.9%2C2.9-4.7%2C6.9-4.7%2C11.2s1.7%2C8.3%2C4.7%2C11.2l21.4%2C21.4c2.9%2C2.9%2C6.9%2C4.7%2C11.2%2C4.7c4.3%2C0%2C8.3-1.7%2C11.2-4.7l114.7-114.7l114.7%2C114.7c2.9%2C2.9%2C6.9%2C4.7%2C11.2%2C4.7c4.3%2C0%2C8.3-1.7%2C11.2-4.7l21.4-21.4c2.9-2.9%2C4.7-6.9%2C4.7-11.2S289.9%2C200.2%2C287%2C197.3z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: right 10px top 50%;
+  background-size: 12px auto;
+  padding-right: 30px; /* 화살표 공간 확보 */
+}
+
+.form-group .other-input {
+  margin-top: 10px;
+}
+
+.time-input-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.time-input-group input[type="number"] {
+  width: 60px; /* 시간 입력 필드 너비 조정 */
+  text-align: center;
+}
+
+.time-input-group select {
+  width: 70px; /* 분 선택 필드 너비 조정 */
+}
+
+.time-input-group span {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+}
+
+.highlight-date {
+  background-color: #e0f7fa; /* 밝은 청록색 배경 */
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #00796b;
+  margin-left: 10px;
+}
+
+.submit-reservation-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background-color: #4CAF50; /* 초록색 */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.submit-reservation-btn:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .reservation-page {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .reservation-page h2 {
+    font-size: 1.5em;
+  }
+
+  .page-close-btn {
+    font-size: 1.8em;
+    top: 10px;
+    right: 10px;
+  }
+
+  .time-input-group {
+    flex-wrap: wrap; /* 모바일에서 시간 입력 필드 줄바꿈 */
+    justify-content: center;
+  }
+
+  .time-input-group input[type="number"],
+  .time-input-group select {
+    width: 45%; /* 모바일에서 너비 조정 */
+  }
+
+  .submit-reservation-btn {
+    padding: 12px;
+    font-size: 1.1em;
+  }
+}
