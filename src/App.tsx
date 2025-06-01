@@ -72,6 +72,7 @@ const MainContent: React.FC<{
   unavailableSchedules: UnavailableScheduleData[]; // 추가: 예약 불가 일정 데이터
   navigate: (path: string) => void;
   handleOpenDetailsModal: (item: ReservationData | UnavailableScheduleData, type: 'reservation' | 'unavailable') => void; // 새로운 prop 추가
+  isLoading: boolean; // 추가: 로딩 상태
 }> = ({
   selectedCampus,
   handleCampusClick,
@@ -93,7 +94,8 @@ const MainContent: React.FC<{
   currentDayReservations,
   unavailableSchedules, // 추가: 예약 불가 일정 데이터 받기
   navigate,
-  handleOpenDetailsModal // 새로운 prop 구조 분해 할당
+  handleOpenDetailsModal, // 새로운 prop 구조 분해 할당
+  isLoading // 추가: 로딩 상태 받기
 }) => {
   const today = new Date();
   const todayDate = today.getDate();
@@ -207,7 +209,6 @@ const MainContent: React.FC<{
           // 현재 날짜가 몇 번째 주(일요일 기준)에 해당하는지 계산
           const targetOccurrenceN = Math.floor((currentDayOfMonth - firstSunday) / 7) + 1;
 
-          // Firestore에 저장된 weekOfMonth와 계산된 targetOccurrenceN이 일치하고, 요일도 일치하는지 확인
           if (schedule.weekOfMonth === targetOccurrenceN && schedule.dayOfWeek === selectedDayOfWeek) {
             hasUnavailable = true;
             break;
@@ -424,86 +425,97 @@ const MainContent: React.FC<{
       </div>
 
       <div className="time-display-container">
-        <div className="time-line">
-          <div className="time-labels">
-            {hoursLine1.map((hour) => (
-              <div key={`line1-hour-${hour}`} className="time-label">
-                {hour < 10 ? `0${hour}` : hour}
+        {isLoading ? (
+          // 로딩 메시지에 인라인 스타일 추가
+          <div className="loading-message" style={{ textAlign: 'center', padding: '20px', fontSize: '1.2em', color: '#555', display: 'block' }}>예약 현황을 불러오는 중입니다...</div>
+        ) : (
+          <>
+            <div className="time-line">
+              <div className="time-labels">
+                {hoursLine1.map((hour) => (
+                  <div key={`line1-hour-${hour}`} className="time-label">
+                    {hour < 10 ? `0${hour}` : hour}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div className="reservation-slots">
-            {reservationSlotsLine1.map((status, index) => (
-              <div
-                key={`line1-slot-${index}`}
-                className={`status-bar ${status}`}
-                onClick={() => {
-                  if (!isLoggedIn) {
-                    requireLogin();
-                    return;
-                  }
-                  if (status === 'available') {
-                    const startTime = getSlotTime(index);
-                    const endTimeIndex = index + 1;
-                    const endTime = getSlotTime(endTimeIndex);
-                    handleOpenReservationPage(startTime, endTime);
-                  } else if (status === 'unavailable') {
-                    const overlappingUnavailable = findOverlappingUnavailableSchedule(index);
-                    if (overlappingUnavailable) {
-                      handleOpenDetailsModal(overlappingUnavailable, 'unavailable');
-                    }
-                  } else { // in-progress or pending
-                    const overlappingRes = findOverlappingReservation(index);
-                    if (overlappingRes) {
-                      handleOpenDetailsModal(overlappingRes, 'reservation');
-                    }
-                  }
-                }}
-              ></div>
-            ))}
-          </div>
-        </div>
+              <div className="reservation-slots">
+                {reservationSlotsLine1.map((status, index) => (
+                  <div
+                    key={`line1-slot-${index}`}
+                    className={`status-bar ${status}`}
+                    onClick={() => {
+                      // 로그인 상태가 아니면 무조건 로그인 요청 메시지 표시
+                      if (!isLoggedIn) {
+                        requireLogin();
+                        return;
+                      }
+                      // 로그인 상태일 경우 기존 로직 수행
+                      if (status === 'available') {
+                        const startTime = getSlotTime(index);
+                        const endTimeIndex = index + 1;
+                        const endTime = getSlotTime(endTimeIndex);
+                        handleOpenReservationPage(startTime, endTime);
+                      } else if (status === 'unavailable') {
+                        const overlappingUnavailable = findOverlappingUnavailableSchedule(index);
+                        if (overlappingUnavailable) {
+                          handleOpenDetailsModal(overlappingUnavailable, 'unavailable');
+                        }
+                      } else { // in-progress or pending
+                        const overlappingRes = findOverlappingReservation(index);
+                        if (overlappingRes) {
+                          handleOpenDetailsModal(overlappingRes, 'reservation');
+                        }
+                      }
+                    }}
+                  ></div>
+                ))}
+              </div>
+            </div>
 
-        <div className="time-line">
-          <div className="time-labels">
-            {hoursLine2.map((hour) => (
-              <div key={`line2-hour-${hour}`} className="time-label">
-                {hour < 10 ? `0${hour}` : hour}
+            <div className="time-line">
+              <div className="time-labels">
+                {hoursLine2.map((hour) => (
+                  <div key={`line2-hour-${hour}`} className="time-label">
+                    {hour < 10 ? `0${hour}` : hour}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div className="reservation-slots">
-            {reservationSlotsLine2.map((status, index) => (
-              <div
-                key={`line2-slot-${index + slotsLine1Count}`}
-                className={`status-bar ${status}`}
-                onClick={() => {
-                  if (!isLoggedIn) {
-                    requireLogin();
-                    return;
-                  }
-                  const absoluteIndex = index + slotsLine1Count;
-                  if (status === 'available') {
-                    const startTime = getSlotTime(absoluteIndex);
-                    const endTimeIndex = absoluteIndex + 1;
-                    const endTime = getSlotTime(endTimeIndex);
-                    handleOpenReservationPage(startTime, endTime);
-                  } else if (status === 'unavailable') {
-                    const overlappingUnavailable = findOverlappingUnavailableSchedule(absoluteIndex);
-                    if (overlappingUnavailable) {
-                      handleOpenDetailsModal(overlappingUnavailable, 'unavailable');
-                    }
-                  } else { // in-progress or pending
-                    const overlappingRes = findOverlappingReservation(absoluteIndex);
-                    if (overlappingRes) {
-                      handleOpenDetailsModal(overlappingRes, 'reservation');
-                    }
-                  }
-                }}
-              ></div>
-            ))}
-          </div>
-        </div>
+              <div className="reservation-slots">
+                {reservationSlotsLine2.map((status, index) => (
+                  <div
+                    key={`line2-slot-${index + slotsLine1Count}`}
+                    className={`status-bar ${status}`}
+                    onClick={() => {
+                      // 로그인 상태가 아니면 무조건 로그인 요청 메시지 표시
+                      if (!isLoggedIn) {
+                        requireLogin();
+                        return;
+                      }
+                      // 로그인 상태일 경우 기존 로직 수행
+                      const absoluteIndex = index + slotsLine1Count;
+                      if (status === 'available') {
+                        const startTime = getSlotTime(absoluteIndex);
+                        const endTimeIndex = absoluteIndex + 1;
+                        const endTime = getSlotTime(endTimeIndex);
+                        handleOpenReservationPage(startTime, endTime);
+                      } else if (status === 'unavailable') {
+                        const overlappingUnavailable = findOverlappingUnavailableSchedule(absoluteIndex);
+                        if (overlappingUnavailable) {
+                          handleOpenDetailsModal(overlappingUnavailable, 'unavailable');
+                        }
+                      } else { // in-progress or pending
+                        const overlappingRes = findOverlappingReservation(absoluteIndex);
+                        if (overlappingRes) {
+                          handleOpenDetailsModal(overlappingRes, 'reservation');
+                        }
+                      }
+                    }}
+                  ></div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       <div className="legend">
@@ -538,10 +550,27 @@ function App() {
   const [allReservations, setAllReservations] = useState<ReservationData[]>([]);
   const [unavailableSchedules, setUnavailableSchedules] = useState<UnavailableScheduleData[]>([]); // 추가: 예약 불가 일정 상태
 
+  // 추가: 데이터 로딩 상태
+  const [isLoading, setIsLoading] = useState(true);
+  const [reservationsLoaded, setReservationsLoaded] = useState(false);
+  const [unavailableSchedulesLoaded, setUnavailableSchedulesLoaded] = useState(false);
+
+
   // 예약 상세 정보 모달 관련 상태
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedItemForDetails, setSelectedItemForDetails] = useState<ReservationData | UnavailableScheduleData | null>(null); // 변경: ReservationData | UnavailableScheduleData
   const [detailsModalType, setDetailsModalType] = useState<'reservation' | 'unavailable' | null>(null); // 추가: 모달에 표시할 데이터 타입
+
+  useEffect(() => {
+    // 모든 데이터 로딩이 완료되었는지 확인
+    if (reservationsLoaded && unavailableSchedulesLoaded) {
+      // DEBUG: Add a small delay to see the loading message
+      // 이 setTimeout은 디버깅 목적으로만 사용하고, 실제 배포 시에는 제거해야 합니다.
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500); // 0.5초 지연
+    }
+  }, [reservationsLoaded, unavailableSchedulesLoaded]);
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
@@ -598,9 +627,11 @@ function App() {
         } as ReservationData);
       });
       setAllReservations(fetchedReservations);
+      setReservationsLoaded(true); // 예약 데이터 로딩 완료
       console.log("Firestore onSnapshot: All reservations updated. Count:", fetchedReservations.length, fetchedReservations);
     }, (error) => {
       console.error("예약 데이터 불러오기 실패:", error);
+      setReservationsLoaded(true); // 에러 발생 시에도 로딩 완료 처리 (UI 멈춤 방지)
     });
 
     // 예약 불가 일정 데이터 구독
@@ -626,9 +657,11 @@ function App() {
         } as UnavailableScheduleData);
       });
       setUnavailableSchedules(fetchedUnavailableSchedules);
+      setUnavailableSchedulesLoaded(true); // 예약 불가 일정 데이터 로딩 완료
       console.log("Firestore onSnapshot: All unavailable schedules updated. Count:", fetchedUnavailableSchedules.length, fetchedUnavailableSchedules);
     }, (error) => {
       console.error("예약 불가 일정 데이터 불러오기 실패:", error);
+      setUnavailableSchedulesLoaded(true); // 에러 발생 시에도 로딩 완료 처리
     });
 
 
@@ -873,6 +906,7 @@ function App() {
             unavailableSchedules={unavailableSchedules} // 추가: 예약 불가 일정 전달
             navigate={navigate}
             handleOpenDetailsModal={handleOpenDetailsModal}
+            isLoading={isLoading} // 추가: 로딩 상태 전달
           />
         } />
         <Route
