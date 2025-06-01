@@ -1,3 +1,4 @@
+// App.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import LoginModal from './components/LoginModal';
@@ -24,7 +25,7 @@ interface ReservationData {
   teamName: string;
   useDate: string; // "YYYY-MM-DD"
   startTime: string; // "HH:MM"
-  endTime: string;   // "HH:MM"
+  endTime: string;   // "HH:MM"
   reason: string;
   applicant: string;
   phoneNumber: string;
@@ -160,7 +161,12 @@ const MainContent: React.FC<{
     let hasPending = false;
     let hasUnavailable = false; // 추가: 예약 불가 상태 플래그
 
-    const selectedDateISO = selectedDate.toISOString().split('T')[0];
+    // selectedDate를 YYYY-MM-DD 형식으로 포매팅하여 사용
+    const year = selectedDate.getFullYear();
+    const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = selectedDate.getDate().toString().padStart(2, '0');
+    const formattedSelectedDate = `${year}-${month}-${day}`;
+
     const selectedDayOfWeek = selectedDate.getDay(); // 0 (일) - 6 (토)
 
     // 1. 예약 불가 일정 확인
@@ -172,7 +178,7 @@ const MainContent: React.FC<{
       const scheduleEndDate = schedule.endDate;
 
       // 기간 내에 있는지 확인
-      if (selectedDateISO < scheduleStartDate || selectedDateISO > scheduleEndDate) continue;
+      if (formattedSelectedDate < scheduleStartDate || formattedSelectedDate > scheduleEndDate) continue;
 
       const scheduleStartMinutes = parseInt(schedule.startTime.split(':')[0]) * 60 + parseInt(schedule.startTime.split(':')[1]);
       const scheduleEndMinutes = parseInt(schedule.endTime.split(':')[0]) * 60 + parseInt(schedule.endTime.split(':')[1]);
@@ -289,12 +295,17 @@ const MainContent: React.FC<{
     const clickedSlotStartMinutes = parseInt(clickedSlotStartTime.split(':')[0]) * 60 + parseInt(clickedSlotStartTime.split(':')[1]);
     const clickedSlotEndMinutes = parseInt(clickedSlotEndTime.split(':')[0]) * 60 + parseInt(clickedSlotEndTime.split(':')[1]);
 
-    const selectedDateISO = selectedDate.toISOString().split('T')[0];
+    // selectedDate를 YYYY-MM-DD 형식으로 포매팅하여 사용
+    const year = selectedDate.getFullYear();
+    const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = selectedDate.getDate().toString().padStart(2, '0');
+    const formattedSelectedDate = `${year}-${month}-${day}`;
+
     const selectedDayOfWeek = selectedDate.getDay();
 
     for (const schedule of unavailableSchedules) {
       if (schedule.campus !== selectedCampus) continue;
-      if (selectedDateISO < schedule.startDate || selectedDateISO > schedule.endDate) continue;
+      if (formattedSelectedDate < schedule.startDate || formattedSelectedDate > schedule.endDate) continue;
 
       const scheduleStartMinutes = parseInt(schedule.startTime.split(':')[0]) * 60 + parseInt(schedule.startTime.split(':')[1]);
       const scheduleEndMinutes = parseInt(schedule.endTime.split(':')[0]) * 60 + parseInt(schedule.endTime.split(':')[1]);
@@ -629,11 +640,13 @@ function App() {
   }, []);
 
   const currentDayReservations = allReservations.filter(res => {
-    const resDate = new Date(res.useDate);
-    const selectedDateISO = selectedDate.toISOString().split('T')[0];
-    const resDateISO = resDate.toISOString().split('T')[0];
+    // selectedDate를 YYYY-MM-DD 형식으로 직접 포매팅하여 비교
+    const year = selectedDate.getFullYear();
+    const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = selectedDate.getDate().toString().padStart(2, '0');
+    const formattedSelectedDate = `${year}-${month}-${day}`;
 
-    return resDateISO === selectedDateISO && res.campus === selectedCampus;
+    return res.useDate === formattedSelectedDate && res.campus === selectedCampus;
   });
 
   console.log("App Component Render - selectedDate:", selectedDate.toISOString().split('T')[0], "selectedCampus:", selectedCampus);

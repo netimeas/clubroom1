@@ -212,9 +212,15 @@ const ReservationPage: React.FC<ReservationPageProps> = ({
       return; // 예약 신청 중단
     }
 
+    // 날짜를 "YYYY-MM-DD" 형식으로 직접 포매팅
+    const year = selectedDate.getFullYear();
+    const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const day = selectedDate.getDate().toString().padStart(2, '0');
+    const formattedUseDate = `${year}-${month}-${day}`;
+
     const reservationData: ReservationData = {
       teamName: finalTeamName,
-      useDate: selectedDate.toISOString().split('T')[0],
+      useDate: formattedUseDate, // 변경된 부분
       startTime: `${startTimeHour}:${startTimeMinute}`,
       endTime: `${endTimeHour}:${endTimeMinute}`,
       reason: finalReason,
