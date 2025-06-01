@@ -1,3 +1,7 @@
+로그인 후, 이름 버튼 누르면 로그아웃 버튼으로 바뀜
+관리자 계정의 경우, 이름 버튼 누르면 관리자 페이지로 감
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
