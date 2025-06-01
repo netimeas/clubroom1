@@ -201,12 +201,10 @@ const MainContent: React.FC<{
           const firstDayOfCurrentMonth = new Date(currentYear, currentMonth, 1);
           const firstDayWeekday = firstDayOfCurrentMonth.getDay(); // 해당 월 1일의 요일 (0:일, 6:토)
 
-          // 해당 월의 첫 번째 일요일 날짜 계산
           const firstSunday = firstDayWeekday === 0
             ? 1
             : 1 + (7 - firstDayWeekday);
 
-          // 현재 날짜가 몇 번째 주(일요일 기준)에 해당하는지 계산
           const targetOccurrenceN = Math.floor((currentDayOfMonth - firstSunday) / 7) + 1;
 
           if (schedule.weekOfMonth === targetOccurrenceN && schedule.dayOfWeek === selectedDayOfWeek) {
@@ -243,7 +241,6 @@ const MainContent: React.FC<{
     else if (hasPending) {
       slotStatus = 'pending';
     }
-    // If none of the above, it remains 'available'
     return slotStatus;
   });
 
@@ -367,6 +364,10 @@ const MainContent: React.FC<{
       </header>
 
       <h1>동아리방 예약</h1>
+      {/* 추가된 문구 */}
+      <p style={{ fontSize: '0.9em', color: '#dc3545', margin: '0 0 15px 0', fontWeight: 'bold' }}>
+        테스트용 웹사이트이니 개인정보 입력은 지양해 주세요.
+      </p>
 
       <div className="calendar-container">
         <div className="calendar-nav">
@@ -564,11 +565,7 @@ function App() {
   useEffect(() => {
     // 모든 데이터 로딩이 완료되었는지 확인
     if (reservationsLoaded && unavailableSchedulesLoaded) {
-      // DEBUG: Add a small delay to see the loading message
-      // 이 setTimeout은 디버깅 목적으로만 사용하고, 실제 배포 시에는 제거해야 합니다.
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500); // 0.5초 지연
+      setIsLoading(false);
     }
   }, [reservationsLoaded, unavailableSchedulesLoaded]);
 
@@ -888,7 +885,7 @@ function App() {
               const lastDayOfPrevMonth = new Date(newYear, newMonth, 0).getDate();
               setDisplayMonth(newMonth);
               setDisplayYear(newYear);
-              setSelectedDate(new Date(newYear, newMonth - 1, lastDayOfPrevMonth));
+              setSelectedDate(new Date(newYear, newMonth - 1, 1));
             }}
             handleNextMonthClick={() => {
               let newMonth = displayMonth + 1;
